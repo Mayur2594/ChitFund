@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+		<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+		<title>SideNav</title>
+		<link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+		<link href="plugins1/bootstrap/css/bootstrap.css" rel="stylesheet">
+		<link href="plugins1/node-waves/waves.css" rel="stylesheet" />
+		<link href="css/style.css" rel="stylesheet">
+		<link href="css/sweetalert.css" rel="stylesheet">
+		<link href="css/themes/all-themes.css" rel="stylesheet" />
+		<script src="js/jquery.min.js"></script>
+		<script src="js/sweetalert.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css">		
+		<link href="plugins1/animate-css/animate.css" rel="stylesheet" />
+		<link href="plugins1/morrisjs/morris.css" rel="stylesheet" /> 
+		<script src="https://apis.google.com/js/platform.js" async defer></script>
+		<script src="angulerjs/socket.io.js"></script>
+		<script src="angulerjs/angular.min.js"></script>
+		<script src="angulerjs/angular-touch.js"></script>
+		<script src="angulerjs/angular-route.min.js"></script>
+		<script src="angulerjs/ui-bootstrap-tpls-0.14.3.min.js"></script>
+		 <script src="js/jssor.slider-27.1.0.min.js" type="text/javascript"></script>
+		<script src="angulerjs/appProduct.js"></script>
+		 <script src="cordova.js"></script> 
+						<script type="text/javascript">
+						 function noBack(){
+							window.history.forward();};
+							$(document).ready(function() {
+								$(".loader").fadeOut("slow");
+							});
+                        </script> 
+
+
+						
+</head>
+
+<body class="theme-green" style="background-color:#fff;" ng-app="ProductApp" ng-controller="productController" ng-init="pageheader = 'Users'">
+    <!-- Page Loader -->
+        <div class="loader"></div>
+    <!-- #END# Page Loader -->
+    <!-- Overlay For Sidebars -->
+    <div class="overlay"></div>
+    <!-- #END# Overlay For Sidebars -->
+	<section>
+		<div ng-include="'Mainmenu.html'"></div>
+    </section>
+    <section class="content"  ng-init="ListUsers()">
+			<div class="row clearfix" style="margin-top:-1.8rem;" ng-init="ListCustomersdata()">
+			
+				<div class="col-sm-12 col-xs-12">
+								<div class="input-group input-group-lg">
+								<div class="form-line">
+									<input type="search" class="form-control" ng-model="search.customer" placeholder="Search"/>
+								</div>
+										<span class="input-group-addon" ng-if="search.customer" ng-click="search.customer =''">
+                                            <i class="material-icons">&#xE14C;</i>
+                                        </span>
+								</div>
+				</div>
+				
+					<div class="table-responsive">
+						<table class="table table-bordered">
+						<thead>
+							<th class="text-left">#</th>
+							<th class="text-center">Name</th>
+							<th class="text-center">Username</th>
+							<th class="text-center">Customer</th>
+							<th class="text-center">Mobile</th>
+						</thead>
+						<tbody ng-repeat="data in UsersList | filter:search.customer">
+							<tr ng-click="GetUsersDetails($index)" data-toggle="modal" data-target="#MyModalAdd"  ng-swipe-left="DeleteUser(data.id)">
+								<td class="text-left">{{$index + 1}}
+								</td>
+								<td class="text-left">{{data.name}}</td>
+								<td class="text-left">{{data.username}}</td>
+								<td class="text-left">{{data.custname}}</td>
+								<td class="text-center">{{data.mobile1}}</td>
+								
+							</tr>
+							</tbody>
+							</table>
+							</div>
+				
+					<div class="col-sm-12 col-xs-12 btmnavbar" ng-if="userlevel == 'Customer'">
+						<div ng-include="'navtabs.html'"></div>
+					</div>
+			</div>
+			<!-- Modal -->
+  <div class="modal fade" id="MyModalAdd" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" ng-click="userdetails = []" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Users</h4>
+        </div>
+        <div class="modal-body">
+		<div class="row">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i>Userlevel:</i>
+						</span>
+						<div class="form-line">
+							<select input="text" class="form-control" ng-model="userdetails[0].userlevel" ng-options="objj as objj for objj in ['Admin','Customer']" required ><option value="" selected disabled>Select Shop</option></select>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i>Name:</i>
+						</span>
+						<div class="form-line">
+							<input class="form-control" ng-model="userdetails[0].name" placeholder="Name" required />
+						</div>
+					</div>
+				</div>
+				
+				<div class="row" ng-if="userdetails[0].userlevel == 'Customer'">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i>Shop:</i>
+						</span>
+						<div class="form-line">
+							<select input="text" class="form-control" ng-model="userdetails[0].custid" ng-options="obj.name as obj.id for obj in CustomersList" required ><option value="" selected disabled>Select Shop</option></select>
+						</div>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i>Address:</i>
+						</span>
+						<div class="form-line">
+							<textarea class="form-control" ng-model="userdetails[0].address" placeholder="Address" required ></textarea>
+						</div>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i>Mobile 1:</i>
+						</span>
+						<div class="form-line">
+							<input type="number" class="form-control" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"  ng-model="userdetails[0].mobile1" maxlength="10"  placeholder="Mobile No. 1" required />
+						</div>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i>Mobile 2:</i>
+						</span>
+						<div class="form-line">
+							<input type="number" class="form-control"  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" ng-model="userdetails[0].mobile2" maxlength="10"  placeholder="Mobile No. 2" />
+						</div>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i>Username:</i>
+						</span>
+						<div class="form-line">
+							<input type="text" class="form-control"  ng-model="userdetails[0].username"   placeholder="Username" required />
+						</div>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i>Password:</i>
+						</span>
+						<div class="form-line">
+							<input type="password" class="form-control password"  ng-model="userdetails[0].password"  placeholder="Password" />
+							
+						</div>
+						<div class="input-group-btn">
+						  <button class="" type="submit" id="showHide">
+							<i class="material-icons">remove_red_eye</i>
+						  </button>
+						</div>
+					</div>
+					<script>
+						$(document).ready(function() {
+						$("#showHide").click(function() {
+							if ($(".password").attr("type") == "password") {
+								$(".password").attr("type", "text");
+							} else {
+									$(".password").attr("type", "password");
+								   }
+								});
+							});
+						</script>
+				</div>
+				
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" ng-click="SaveUser()" data-dismiss="modal">Save</button>
+          <button type="button" class="btn btn-default" ng-click="userdetails = []" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+			
+			
+			<div id="container-floating">
+					  <div id="floating-button" data-toggle="modal" data-target="#MyModalAdd">
+						<p class="plus">+</p>
+					  </div>
+									
+					</div>
+    </section>
+	
+    <script src="plugins1/bootstrap/js/bootstrap.js"></script>
+    <script src="plugins1/jquery-slimscroll/jquery.slimscroll.js"></script>
+    <script src="plugins1/node-waves/waves.js"></script>
+    <script src="plugins1/jquery-countto/jquery.countTo.js"></script>
+</body>
+</html>

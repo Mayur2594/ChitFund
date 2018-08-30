@@ -1,0 +1,174 @@
+		
+    <!-- Top Bar -->
+    <nav class="navbar">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false" style="visibility:hidden"></a>
+                <a href="javascript:void(0);" ng-show="userlevel== 'Admin'" class="bars"></a>
+                <a class="navbar-brand">{{pageheader}}</a>
+				 <a href="#" onclick="localStorage.clear();sessionStorage.clear();location.href='index.html';" class="signout"></a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+					<!-- <li class="pull-right">
+                        <a href="javascript:void(0);" role="button">
+                            <i class="material-icons">&#xE019;</i>
+                        </a>
+					</li> -->
+                    <!-- #END# Call Search -->
+                  
+					
+                    <li class="dropdown pull-right">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                            <i class="material-icons">&#xE7F4;</i>
+                            <span class="label-count">0</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="header">NOTIFICATIONS</li>
+                            <li class="body">
+                                <ul class="menu" style="list-style-type:none;">
+                                    <li>
+                                        <!-- <a href="javascript:void(0);">
+                                            <div class="icon-circle bg-cyan">
+                                                <i class="material-icons">add_shopping_cart</i>
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4>4 sales made</h4>
+                                                <p>
+                                                    <i class="material-icons">access_time</i> 22 mins ago
+                                                </p>
+                                            </div>
+                                        </a> -->
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="footer">
+                                <a href="javascript:void(0);">View All Notifications</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- #END# Notifications -->
+                    <!-- <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="material-icons">more_vert</i></a></li> -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- #Top Bar -->
+    <section>
+  <!-- Left Sidebar -->
+        <aside id="leftsidebar" class="sidebar">
+            <!-- User Info -->
+            <div class="user-info">
+                
+            </div>
+            <!-- #User Info -->
+            <!-- Menu -->
+            <div class="menu">
+                <ul class="list">
+                    <li class="header">Username: {{username}}</li>
+							<li class="active">
+								<a href="Dashboard.html">
+									<i class="material-icons">home</i>
+									<span>Home</span>
+								</a>
+							</li>
+							<li>
+								<a href="productTypeMaster.html">
+									<i class="material-icons">people</i>
+									<span>Member`s Details</span>
+								</a>
+							</li>
+							
+							<li>
+								<a href="productsMaster.html">
+									<i class="material-icons">widgets</i>
+									<span>Chit`s Details</span>
+								</a>
+							</li>
+							<li>
+								<a href="customerMaster.html">
+									<i class="material-icons">widgets</i>
+									<span>Chits v/s Members</span>
+								</a>
+							</li>
+							
+							<li>
+								<a href="userMaster.html">
+									<i class="material-icons">people</i>
+									<span>Users</span>
+								</a>
+							</li>
+							
+							<li>
+								<a href="PaymentMaster.html">
+									<i class="material-icons">payment</i>
+									<span>Chit Payment</span>
+								</a>
+							</li>
+							<li>
+								<a href="OrderMaster.html">
+									<i class="material-icons">&#xE560;</i>
+									<span>Chit Receipts</span>
+								</a>
+							</li>
+							<li>
+								<a href="#" class="menu-toggle">
+									<i class="material-icons">&#xE85D;</i>
+									<span>Reports</span>
+								</a>
+								<ul class="ml-menu">
+									<li>
+										<a href="EmployeeMaster.html">
+										 <i class="material-icons" style="font-size:15px;color:orange;">donut_large</i>
+											<span>Member`s Ledger</span>
+										</a>
+									</li>
+									<li>
+										<a href="userAttendance.html">
+										 <i class="material-icons" style="font-size:15px;color:orange;">donut_large</i>
+											<span>Chit's Ledger</span>
+										</a>
+									</li>
+									<li>
+										<a href="expenses_master.html">
+										 <i class="material-icons" style="font-size:15px;color:orange;">donut_large</i>
+											<span>Day Book</span>
+										</a>
+									</li>
+									<li>
+										<a href="EmployeeSalary.html">
+										 <i class="material-icons" style="font-size:15px;color:orange;">donut_large</i>
+											<span>Receipts Due</span>
+										</a>
+									</li>
+								</ul>
+							</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- #Menu -->
+            <!-- Footer -->
+            <div class="legal">
+                <div class="copyright">
+                    &copy; 2018 <a href="javascript:void(0);">L.N. Infotech</a>.
+                </div>
+                <div class="version">
+                    <b>Version: </b> 1.0.0
+                </div>
+            </div>
+            <!-- #Footer -->
+        </aside>
+        <!-- #END# Left Sidebar -->
+		</section>
+		<!-- Custom Js -->
+	
+	
+	
+  
+	
+		<script src="js/admin.js"></script>
+		<script src="js/demo.js"></script> 
+
+	
+	

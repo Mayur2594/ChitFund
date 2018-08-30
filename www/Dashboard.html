@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+		<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+		<title>SideNav</title>
+		<link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+		<link href="plugins1/bootstrap/css/bootstrap.css" rel="stylesheet">
+		<link href="plugins1/node-waves/waves.css" rel="stylesheet" />
+		<link href="css/style.css" rel="stylesheet">
+		<link href="css/sweetalert.css" rel="stylesheet">
+		<link href="css/themes/all-themes.css" rel="stylesheet" />
+		<script src="js/jquery.min.js"></script>
+		<script src="js/sweetalert.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css">		
+		<link href="plugins1/animate-css/animate.css" rel="stylesheet" />
+		<link href="plugins1/morrisjs/morris.css" rel="stylesheet" /> 
+		<script src="https://apis.google.com/js/platform.js" async defer></script>
+		<script src="angulerjs/angular.min.js"></script>
+		<script src="angulerjs/angular-route.min.js"></script>
+		<script src="angulerjs/ui-bootstrap-tpls-0.14.3.min.js"></script>
+		<script src="angulerjs/ChitfundApp.js"></script>
+		<script type="text/javascript">
+			function noBack(){
+				window.history.forward();};
+				$(document).ready(function() {
+				$(".loader").fadeOut("slow");
+			});
+        </script> 				
+</head>
+
+<body class="theme-cyan" style="background-color:#fff;" ng-app="ChitfundApp" ng-controller="chitFundController" ng-init="pageheader = 'Chit Fund'">
+    <!-- Page Loader -->
+        <div class="loader"></div>
+    <!-- #END# Page Loader -->
+    <!-- Overlay For Sidebars -->
+    <div class="overlay"></div>
+    <!-- #END# Overlay For Sidebars -->
+	<section>
+		<div ng-include="'Mainmenu.html'"></div>
+    </section>
+
+    <section class="content" ng-init="getDashboardCount('day',Curentdate)">
+        <!-- <div class="container-fluid"> -->
+            <!-- Widgets -->
+			
+			
+
+ 
+		
+            <div class="row clearfix" style="margin-top:-2.3rem;" ng-init="">
+            
+					
+		
+		<div class="col-sm-12 col-xs-12" style="margin-top:1.5rem;">
+			<div class="col-sm-6 col-xs-6">
+						<div class="input-group">
+							<div class="form-line">
+								<input type="month" class="form-control" ng-model="selectedmonth" ng-change="getDashboardCount('month',selectedmonth)"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6 col-xs-6">
+						<div class="input-group">
+							<div class="form-line">
+								<input type="date" class="form-control" ng-model="selecteddate" ng-change="getDashboardCount('day',selecteddate)"/>
+							</div>
+						</div>
+					</div>
+		</div>
+		
+		 <div class="info-box-3 col-md-6 col-sm-6 col-xs-6 bg-teal img-thumbnail1" style="height:140px" onclick="location.href='productsMaster.html'">
+						<div class="icon">
+                            <i class="material-icons" style="font-size:10rem;">people</i>
+                        </div>
+						 <div class="content pull-left">
+                            <div class="header">
+                            <h4>
+                           Members
+                            </h4>
+                            
+                        </div>
+						<h2 class="h2-responsive pull-left">{{DashboardCount[0].totalusers}}</h2>
+                        </div>
+            </div>
+			
+			<div class="info-box-3 col-md-6 col-sm-6 col-xs-6 bg-amber img-thumbnail1" style="height:140px" onclick="location.href='customerMaster.html'">
+					<div class="icon">
+                            <i class="material-icons" style="font-size:10rem;">widgets</i>
+                        </div>
+						 <div class="content pull-left">
+                            <div class="header">
+                            <h4>
+								Chits
+                            </h4>
+                            
+                        </div>
+						<h2 class="h2-responsive pull-left">{{DashboardCount[0].totalamount | number:2}}</h2>
+                        </div>
+            </div>
+           
+            <div class="info-box-3 col-md-12 col-sm-12 col-xs-12 bg-cyan img-thumbnail1" style="height:140px;margin-top:-28px;margin-bottom:6.5rem;"  onclick="location.href='SalesMaster.html'">
+						<div class="icon">
+						
+                            <i class="material-icons" style="font-size:10rem;">payment</i>
+                        </div>
+						 <div class="content pull-left">
+                            <div class="header">
+                            <h4>
+								Total Payment
+                            </h4>
+                            
+                        </div>
+						<h2 class="h2-responsive pull-left">{{DashboardCount[0].totalorders}}</h2>
+						<div class="row" style="white-space:nowrap;">
+						
+						</div>
+                        </div>
+						
+            </div>
+			
+			<div class="info-box-3 col-md-12 col-sm-12 col-xs-12 bg-teal img-thumbnail1" style="height:140px;margin-top:-64.5px;margin-bottom:6.5rem;"  onclick="location.href='SalesMaster.html'">
+						<div class="icon">
+						
+                            <i class="material-icons" style="font-size:10rem;">&#xE560;</i>
+                        </div>
+						 <div class="content pull-left">
+                            <div class="header">
+                            <h4>
+								Total Receipts
+                            </h4>
+                            
+                        </div>
+						<h2 class="h2-responsive pull-left">{{DashboardCount[0].totalorders}}</h2>
+						<div class="row" style="white-space:nowrap;">
+						
+						</div>
+                        </div>
+						
+            </div>
+			
+				
+			</div>
+			
+			<div class="row btmnavbar">
+			<div ng-include="'navtabs.html'"></div>
+			</div>
+			</div>
+			
+        <!-- </div> -->
+    </section>
+	
+    <script src="plugins1/bootstrap/js/bootstrap.js"></script>
+    <script src="plugins1/jquery-slimscroll/jquery.slimscroll.js"></script>
+    <script src="plugins1/node-waves/waves.js"></script>
+    <script src="plugins1/jquery-countto/jquery.countTo.js"></script>
+</body>
+</html>
