@@ -36,7 +36,7 @@
 						
 </head>
 
-<body class="theme-cyan" style="background-color:#fff;" ng-app="ChitfundApp" ng-controller="chitFundController" ng-init="pageheader = 'User`s Details'">
+<body class="theme-cyan" style="background-color:#fff;" ng-app="ChitfundApp" ng-controller="chitFundController" ng-init="pageheader = 'Members`s Details'">
     <!-- Page Loader -->
         <div class="loader"></div>
     <!-- #END# Page Loader -->
@@ -47,7 +47,7 @@
 		<div ng-if="userlevel === 'Superadmin'" ng-include="'SuperadminMainmenu.html'"></div>
 		<div ng-if="userlevel != 'Superadmin'" ng-include="'Mainmenu.html'"></div>
     </section>
-    <section class="content"  ng-init="ListUsers();ListCompaniesreferance();">
+    <section class="content"  ng-init="ListMembers();">
 			<div class="row clearfix" style="margin-top:-1.8rem;">
 			
 				<div class="col-sm-12 col-xs-12">
@@ -68,13 +68,14 @@
 							<tr ng-swipe-left="ToggleDeleteAction(ResultedRecords,$index)" ng-swipe-right="data.deletetoggle = false">
 									<td class="card">
 										<div class="row">
-										<div class="col-md-9 col-xs-9" ng-click="GetUserDetails(data.id)" data-toggle="modal" data-target="#MyModalAdd">
-												<label><i class="fa fa-building" aria-hidden="true"></i> &nbsp;&nbsp;{{data.companyname}}</label><br>
-												<label><i class="fa fa-user" aria-hidden="true"></i> &nbsp;&nbsp;{{data.fullname}}</label><br>
-												<label><i class="fa fa-phone" aria-hidden="true"></i>&nbsp;&nbsp;{{data.mobile}}</label>
+										<div class="col-md-9 col-xs-9" ng-click="GetMemberDetails(data.id)" data-toggle="modal" data-target="#MyModalAdd">
+												<label><i class="fa fa-user" aria-hidden="true"></i> &nbsp;&nbsp;{{data.name}}</label><br>
+												<label><i class="fa fa-phone" aria-hidden="true"></i>&nbsp;&nbsp;{{data.mobile}}</label><br>
+												<label><i class="fa fa-envelope" aria-hidden="true"></i> &nbsp;&nbsp;{{data.email}}</label>
+												
 												</div>
 												<div class="col-md-3 col-xs-3">
-													<label class="pull-right mt-6 btn btn-primary-outline" ng-if="data.deletetoggle === true" ng-click="DeleteUser(data.id)">Delete</label>
+													<label class="pull-right mt-6 btn btn-primary-outline" ng-if="data.deletetoggle === true" ng-click="DeleteMember(data.id)">Delete</label>
 												</div>
 										</div>
 											
@@ -95,41 +96,18 @@
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" ng-click="userDetails = []" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">User`s Details</h4>
+          <button type="button" class="close" ng-click="membersDetails = []" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Members`s Details</h4>
         </div>
         <div class="modal-body">
-			<form name="userDetails">
-				<div class="row" ng-if="userlevel === 'Superadmin'">
-					<div class="input-group">
-						<span class="input-group-addon">
-							<i>Company:</i>
-						</span>
-						<div class="form-line">
-							<select class="form-control" ng-model="userDetails[0].companyid" ng-options="obj.id as obj.name for obj in companiesidsList">
-								<option value="" selected disabled>Select Company</option>
-							</select>
-						</div>
-					</div>
-				</div>
-				
-				<div class="row" ng-if="userlevel !== 'Superadmin'">
-					<div class="input-group">
-						<span class="input-group-addon">
-							<i>Company:</i>
-						</span>
-						<div class="form-line">
-							<input ng-model="companyname" class="form-control" placeholder="Company" readonly />
-						</div>
-					</div>
-				</div>
+			<form name="membersDetails">
 				<div class="row">
 					<div class="input-group">
 						<span class="input-group-addon">
 							<i>Name:</i>
 						</span>
 						<div class="form-line">
-							<input class="form-control" ng-model="userDetails[0].fullname" placeholder="Name" required />
+							<input class="form-control" ng-model="membersDetails[0].name" placeholder="Name" required />
 						</div>
 					</div>
 				</div>
@@ -139,7 +117,7 @@
 							<i>Mobile No.:</i>
 						</span>
 						<div class="form-line">
-							<input type="number" class="form-control" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"  ng-model="userDetails[0].mobile" maxlength="10"  placeholder="Mobile No." required />
+							<input type="number" class="form-control" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"  ng-model="membersDetails[0].mobile" maxlength="10"  placeholder="Mobile No." required />
 						</div>
 					</div>
 				</div>
@@ -149,38 +127,20 @@
 							<i>Email:</i>
 						</span>
 						<div class="form-line">
-							<input type="email" class="form-control"  ng-model="userDetails[0].email"   placeholder="Email" required />
+							<input type="email" class="form-control"  ng-model="membersDetails[0].email"   placeholder="Email" required />
 						</div>
 					</div>
 				</div>
-				<legend>Login Details</legend>
-					<div class="input-group" ng-if="userlevel === 'Superadmin'">
-						<span class="input-group-addon">
-							<i>Userlevel:</i>
-						</span>
-						<div class="form-line">
-							<select class="form-control" ng-model="userDetails[0].userlevel" ng-options="obj for obj in ['Superadmin','Admin']">
-								<option value="" selected disabled>Select Userlevel</option>
-							</select>
-						</div>
-					</div>
-					
-					<div class="input-group" ng-if="userlevel !== 'Superadmin'">
-						<span class="input-group-addon">
-							<i>Userlevel:</i>
-						</span>
-						<div class="form-line">
-							<input ng-model="userDetails[0].userlevel = 'Admin'" class="form-control" placeholder="Userlevel" readonly />
-						</div>
-					</div>
-					
-					<div class="row">
+				
+				
+				<div class="row">
 					<div class="input-group">
 						<span class="input-group-addon">
-							<i>Username:</i>
+							<i>Address:</i>
 						</span>
 						<div class="form-line">
-							<input type="text" class="form-control"  ng-model="userDetails[0].username"   placeholder="Username" required />
+							<textarea class="form-control"  ng-model="membersDetails[0].address"   placeholder="Address" required>
+							</textarea>
 						</div>
 					</div>
 				</div>
@@ -188,36 +148,33 @@
 				<div class="row">
 					<div class="input-group">
 						<span class="input-group-addon">
-							<i>Password:</i>
+							<i>City:</i>
 						</span>
 						<div class="form-line">
-							<input type="password" class="form-control password"  ng-model="userDetails[0].password"  placeholder="Password" />
-							
-						</div>
-						<div class="input-group-btn">
-						  <button class="" type="submit" id="showHide">
-							<i class="material-icons">remove_red_eye</i>
-						  </button>
+							<input type="text" class="form-control"  ng-model="membersDetails[0].city"   placeholder="City" required />
 						</div>
 					</div>
-					<script>
-						$(document).ready(function() {
-						$("#showHide").click(function() {
-							if ($(".password").attr("type") == "password") {
-								$(".password").attr("type", "text");
-							} else {
-									$(".password").attr("type", "password");
-								   }
-								});
-							});
-						</script>
 				</div>
+				
+				
+				<div class="row">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i>State:</i>
+						</span>
+						<div class="form-line">
+							<input type="text" class="form-control"  ng-model="membersDetails[0].state"   placeholder="State" required />
+						</div>
+					</div>
+				</div>
+				
+				
 					
 			</form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" ng-disabled="userDetails.$invalid" ng-click="SaveUser()" data-dismiss="modal">Save</button>
-          <button type="button" class="btn btn-default" ng-click="userDetails = []" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" ng-disabled="membersDetails.$invalid" ng-click="SaveMember()" data-dismiss="modal">Save</button>
+          <button type="button" class="btn btn-default" ng-click="membersDetails = []" data-dismiss="modal">Close</button>
         </div>
       </div>
       

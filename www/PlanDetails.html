@@ -36,7 +36,7 @@
 						
 </head>
 
-<body class="theme-cyan" style="background-color:#fff;" ng-app="ChitfundApp" ng-controller="chitFundController" ng-init="pageheader = 'User`s Details'">
+<body class="theme-cyan" style="background-color:#fff;" ng-app="ChitfundApp" ng-controller="chitFundController" ng-init="pageheader = 'Plans'">
     <!-- Page Loader -->
         <div class="loader"></div>
     <!-- #END# Page Loader -->
@@ -44,10 +44,9 @@
     <div class="overlay"></div>
     <!-- #END# Overlay For Sidebars -->
 	<section>
-		<div ng-if="userlevel === 'Superadmin'" ng-include="'SuperadminMainmenu.html'"></div>
-		<div ng-if="userlevel != 'Superadmin'" ng-include="'Mainmenu.html'"></div>
+		<div ng-include="'SuperadminMainmenu.html'"></div>
     </section>
-    <section class="content"  ng-init="ListUsers();ListCompaniesreferance();">
+    <section class="content"  ng-init="ListPlans()">
 			<div class="row clearfix" style="margin-top:-1.8rem;">
 			
 				<div class="col-sm-12 col-xs-12">
@@ -68,13 +67,13 @@
 							<tr ng-swipe-left="ToggleDeleteAction(ResultedRecords,$index)" ng-swipe-right="data.deletetoggle = false">
 									<td class="card">
 										<div class="row">
-										<div class="col-md-9 col-xs-9" ng-click="GetUserDetails(data.id)" data-toggle="modal" data-target="#MyModalAdd">
-												<label><i class="fa fa-building" aria-hidden="true"></i> &nbsp;&nbsp;{{data.companyname}}</label><br>
-												<label><i class="fa fa-user" aria-hidden="true"></i> &nbsp;&nbsp;{{data.fullname}}</label><br>
-												<label><i class="fa fa-phone" aria-hidden="true"></i>&nbsp;&nbsp;{{data.mobile}}</label>
+										<div class="col-md-9 col-xs-9" ng-click="GetPlanDetails(data.id)" data-toggle="modal" data-target="#MyModalAdd">
+												<label><i class="fa fa-th-list" aria-hidden="true"></i> &nbsp;&nbsp;{{data.name}}</label><br>
+												<label><i class="fa fa-clock-o" aria-hidden="true"></i> &nbsp;&nbsp;{{data.validity}} {{data.planinterval}}</label><br>
+												<label><i class="fa fa-inr" aria-hidden="true"></i>&nbsp;&nbsp;{{data.amount | number:2}}</label>
 												</div>
 												<div class="col-md-3 col-xs-3">
-													<label class="pull-right mt-6 btn btn-primary-outline" ng-if="data.deletetoggle === true" ng-click="DeleteUser(data.id)">Delete</label>
+													<label class="pull-right mt-6 btn btn-primary-outline" ng-if="data.deletetoggle === true" ng-click="DeletePlan(data.id)">Delete</label>
 												</div>
 										</div>
 											
@@ -95,92 +94,53 @@
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" ng-click="userDetails = []" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">User`s Details</h4>
+          <button type="button" class="close" ng-click="planDetails = []" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Plan`s Details</h4>
         </div>
         <div class="modal-body">
-			<form name="userDetails">
-				<div class="row" ng-if="userlevel === 'Superadmin'">
-					<div class="input-group">
-						<span class="input-group-addon">
-							<i>Company:</i>
-						</span>
-						<div class="form-line">
-							<select class="form-control" ng-model="userDetails[0].companyid" ng-options="obj.id as obj.name for obj in companiesidsList">
-								<option value="" selected disabled>Select Company</option>
-							</select>
-						</div>
-					</div>
-				</div>
-				
-				<div class="row" ng-if="userlevel !== 'Superadmin'">
-					<div class="input-group">
-						<span class="input-group-addon">
-							<i>Company:</i>
-						</span>
-						<div class="form-line">
-							<input ng-model="companyname" class="form-control" placeholder="Company" readonly />
-						</div>
-					</div>
-				</div>
+			<form name="plandetails">
 				<div class="row">
 					<div class="input-group">
 						<span class="input-group-addon">
 							<i>Name:</i>
 						</span>
 						<div class="form-line">
-							<input class="form-control" ng-model="userDetails[0].fullname" placeholder="Name" required />
+							<input class="form-control" ng-model="planDetails[0].name" placeholder="Name" required />
+						</div>
+					</div>
+				</div>
+				
+				
+				<div class="row">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i>Description:</i>
+						</span>
+						<div class="form-line">
+							<textarea class="form-control"  ng-model="planDetails[0].description"   placeholder="Description" required>
+							</textarea>
 						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="input-group">
 						<span class="input-group-addon">
-							<i>Mobile No.:</i>
+							<i>Interval:</i>
 						</span>
 						<div class="form-line">
-							<input type="number" class="form-control" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"  ng-model="userDetails[0].mobile" maxlength="10"  placeholder="Mobile No." required />
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="input-group">
-						<span class="input-group-addon">
-							<i>Email:</i>
-						</span>
-						<div class="form-line">
-							<input type="email" class="form-control"  ng-model="userDetails[0].email"   placeholder="Email" required />
-						</div>
-					</div>
-				</div>
-				<legend>Login Details</legend>
-					<div class="input-group" ng-if="userlevel === 'Superadmin'">
-						<span class="input-group-addon">
-							<i>Userlevel:</i>
-						</span>
-						<div class="form-line">
-							<select class="form-control" ng-model="userDetails[0].userlevel" ng-options="obj for obj in ['Superadmin','Admin']">
-								<option value="" selected disabled>Select Userlevel</option>
+							<select class="form-control" ng-model="planDetails[0].planinterval" ng-options="obj for obj in ['Years','Months','Days']">
+								<option value="" selected disabled>Interval</option>
 							</select>
 						</div>
 					</div>
-					
-					<div class="input-group" ng-if="userlevel !== 'Superadmin'">
-						<span class="input-group-addon">
-							<i>Userlevel:</i>
-						</span>
-						<div class="form-line">
-							<input ng-model="userDetails[0].userlevel = 'Admin'" class="form-control" placeholder="Userlevel" readonly />
-						</div>
-					</div>
-					
-					<div class="row">
+				</div>
+				<div class="row">
 					<div class="input-group">
 						<span class="input-group-addon">
-							<i>Username:</i>
+							<i>Validity (in {{planDetails[0].planinterval}}):</i>
 						</span>
 						<div class="form-line">
-							<input type="text" class="form-control"  ng-model="userDetails[0].username"   placeholder="Username" required />
+							<input type="number" class="form-control" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"  ng-model="planDetails[0].validity" maxlength="10"  placeholder="Validity" required />
 						</div>
 					</div>
 				</div>
@@ -188,36 +148,19 @@
 				<div class="row">
 					<div class="input-group">
 						<span class="input-group-addon">
-							<i>Password:</i>
+							<i>Amount (in inr):</i>
 						</span>
 						<div class="form-line">
-							<input type="password" class="form-control password"  ng-model="userDetails[0].password"  placeholder="Password" />
-							
-						</div>
-						<div class="input-group-btn">
-						  <button class="" type="submit" id="showHide">
-							<i class="material-icons">remove_red_eye</i>
-						  </button>
+							<input type="number" class="form-control" ng-model="planDetails[0].amount"   placeholder="Amount" required />
 						</div>
 					</div>
-					<script>
-						$(document).ready(function() {
-						$("#showHide").click(function() {
-							if ($(".password").attr("type") == "password") {
-								$(".password").attr("type", "text");
-							} else {
-									$(".password").attr("type", "password");
-								   }
-								});
-							});
-						</script>
 				</div>
-					
+				
 			</form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" ng-disabled="userDetails.$invalid" ng-click="SaveUser()" data-dismiss="modal">Save</button>
-          <button type="button" class="btn btn-default" ng-click="userDetails = []" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" ng-disabled="plandetails.$invalid" ng-click="SavePlan()" data-dismiss="modal">Save</button>
+          <button type="button" class="btn btn-default" ng-click="planDetails = []" data-dismiss="modal">Close</button>
         </div>
       </div>
       
@@ -226,12 +169,12 @@
   
 			
 			
-			 <div id="container-floating">
+			<div id="container-floating">
 					  <div id="floating-button" data-toggle="modal" data-target="#MyModalAdd">
 						<p class="plus">+</p>
 					  </div>
 									
-					</div> 
+					</div>
     </section>
 	
     <script src="plugins1/bootstrap/js/bootstrap.js"></script>

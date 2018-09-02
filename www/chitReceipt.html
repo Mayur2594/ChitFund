@@ -18,14 +18,12 @@
 		<link href="plugins1/animate-css/animate.css" rel="stylesheet" />
 		<link href="plugins1/morrisjs/morris.css" rel="stylesheet" /> 
 		<script src="https://apis.google.com/js/platform.js" async defer></script>
-		<script src="angulerjs/socket.io.js"></script>
 		<script src="angulerjs/angular.min.js"></script>
 		<script src="angulerjs/angular-touch.js"></script>
 		<script src="angulerjs/angular-route.min.js"></script>
 		<script src="angulerjs/ui-bootstrap-tpls-0.14.3.min.js"></script>
-		 <script src="js/jssor.slider-27.1.0.min.js" type="text/javascript"></script>
-		<script src="angulerjs/appProduct.js"></script>
-		 <script src="cordova.js"></script>
+		<script src="angulerjs/ChitfundApp.js"></script>
+		 <!-- <script src="cordova.js"></script>  -->
 						<script type="text/javascript">
 						 function noBack(){
 							window.history.forward();};
@@ -38,7 +36,7 @@
 						
 </head>
 
-<body class="theme-green" style="background-color:#fff;" ng-app="ProductApp" ng-controller="productController" ng-init="pageheader = 'Products'">
+<body class="theme-cyan" style="background-color:#fff;" ng-app="ChitfundApp" ng-controller="chitFundController" ng-init="pageheader = 'Chit Receipt'">
     <!-- Page Loader -->
         <div class="loader"></div>
     <!-- #END# Page Loader -->
@@ -46,10 +44,11 @@
     <div class="overlay"></div>
     <!-- #END# Overlay For Sidebars -->
 	<section>
-		<div ng-include="'Mainmenu.html'"></div>
+		<div ng-if="userlevel === 'Superadmin'" ng-include="'SuperadminMainmenu.html'"></div>
+		<div ng-if="userlevel != 'Superadmin'" ng-include="'Mainmenu.html'"></div>
     </section>
-    <section class="content"  ng-init="ListProductsType()">
-			<div class="row clearfix" style="margin-top:-1.8rem;" ng-init="">
+    <section class="content"  ng-init="ListchitReceiptDetails();Chitidref();Memberidref();">
+			<div class="row clearfix" style="margin-top:-1.8rem;">
 			
 				<div class="col-sm-12 col-xs-12">
 								<div class="input-group input-group-lg">
@@ -62,21 +61,27 @@
 								</div>
 				</div>
 				
-					<div class="table-responsive" ng-init="ListProducts()">
+					<div class="table-responsive">
 						<table class="table table-bordered">
-						<thead>
-							<th class="text-left">#</th>
-							<th class="text-center">Type</th>
-							<th class="text-center">Name</th>
-							<th class="text-center">Rate</th>
-						</thead>
-						<tbody ng-repeat="data in ProductList | filter:search.customer">
-							<tr ng-click="GetProductsDetails($index)" data-toggle="modal" data-target="#MyModalAdd"  ng-swipe-left="DeleteProduct(data.id)">
-								<td class="text-left">{{$index + 1}}</td>
-								<td class="text-left">{{data.type}}</td>
-								<td class="text-left">{{data.name}}</td>
-								<td class="text-right">{{data.rate | number:2}}</td>
-								
+						
+						<tbody ng-repeat="data in ResultedRecords | filter:search.customer">
+							<tr ng-swipe-left="ToggleDeleteAction(ResultedRecords,$index)" ng-swipe-right="data.deletetoggle = false">
+									<td class="card">
+										<div class="row">
+										<div class="col-md-9 col-xs-9" ng-click="GetchitReceiptDetails(data.id)" data-toggle="modal" data-target="#MyModalAdd">
+												<label><i class="fa fa-user" aria-hidden="true"></i> &nbsp;&nbsp;{{data.membername}}</label><br>
+												<label><i class="fa fa-sticky-note" aria-hidden="true"></i> &nbsp;&nbsp;{{data.chitname}}</label><br>
+												<label><i class="fa fa-inr" aria-hidden="true"></i> &nbsp;&nbsp;{{data.amount | number:2}}
+												&nbsp;&nbsp;
+												<i class="fa fa-calendar" aria-hidden="true"></i> &nbsp;&nbsp;{{data.recieptdate | date:'dd/MM/yyyy'}}</label>
+												
+												</div>
+												<div class="col-md-3 col-xs-3">
+													<label class="pull-right mt-6 btn btn-primary-outline" ng-if="data.deletetoggle === true" ng-click="DeleteChitReceipt(data.id)">Delete</label>
+												</div>
+										</div>
+											
+									</td>
 							</tr>
 							</tbody>
 							</table>
@@ -93,19 +98,18 @@
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" ng-click="product = []" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Product Type</h4>
+          <button type="button" class="close" ng-click="chitReceiptDetails = []" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Chit and members allocation</h4>
         </div>
         <div class="modal-body">
+			<form name="chitReceipt">
 				<div class="row">
 					<div class="input-group">
 						<span class="input-group-addon">
-							<i>Type:</i>
+							<i>Select Chit:</i>
 						</span>
 						<div class="form-line">
-							<select class="form-control" ng-model="product[0].typeid" ng-options="obj.id as obj.type for obj in ProductsTypeList">
-								<option value="" selected disabled>Select type</option>
-							</select>
+							<input class="form-control" ng-model="chitReceiptDetails[0].selectedchitid" typeahead="obj as obj.name for obj in ChitsidList" typeahead-on-select="chitReceiptDetails[0].chitid = $item.id" placeholder="Select Chit" required />
 						</div>
 					</div>
 				</div>
@@ -113,10 +117,10 @@
 				<div class="row">
 					<div class="input-group">
 						<span class="input-group-addon">
-							<i>Name:</i>
+							<i>Select Member:</i>
 						</span>
 						<div class="form-line">
-							<input class="form-control" ng-model="product[0].name" placeholder="Name" required />
+							<input type="text" class="form-control"  ng-model="chitReceiptDetails[0].selectedmemberid" typeahead="obj as obj.name for obj in MembersidList" typeahead-on-select ="chitReceiptDetails[0].memberid = $item.id" placeholder="Select Member" required />
 						</div>
 					</div>
 				</div>
@@ -124,10 +128,10 @@
 				<div class="row">
 					<div class="input-group">
 						<span class="input-group-addon">
-							<i>Unit:</i>
+							<i>Amount:</i>
 						</span>
 						<div class="form-line">
-							<select class="form-control" ng-model="product[0].unit" ng-options="obj for obj in ['Kg','pieces']" required ><option value="" selected disabled>Select Unit</option></select>
+							<input type="number" class="form-control"  ng-model="chitReceiptDetails[0].amount"   placeholder="Amount" required />
 						</div>
 					</div>
 				</div>
@@ -135,17 +139,19 @@
 				<div class="row">
 					<div class="input-group">
 						<span class="input-group-addon">
-							<i>Rate:</i>
+							<i>Payment Date:</i>
 						</span>
 						<div class="form-line">
-							<input input="number" class="form-control" ng-model="product[0].rate" placeholder="Rate" required />
+							<input type="date" class="form-control" ng-model="chitReceiptDetails[0].recieptdate"  required />
 						</div>
 					</div>
 				</div>
+
+			</form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" ng-click="SaveProduct()" data-dismiss="modal">Save</button>
-          <button type="button" class="btn btn-default" ng-click="product = []" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" ng-disabled="chitReceipt.$invalid" ng-click="SaveChitReceipt()" data-dismiss="modal">Save</button>
+          <button type="button" class="btn btn-default" ng-click="chitReceiptDetails = []" data-dismiss="modal">Close</button>
         </div>
       </div>
       
@@ -154,12 +160,12 @@
   
 			
 			
-			<div id="container-floating">
+			 <div id="container-floating">
 					  <div id="floating-button" data-toggle="modal" data-target="#MyModalAdd">
 						<p class="plus">+</p>
 					  </div>
 									
-					</div>
+					</div> 
     </section>
 	
     <script src="plugins1/bootstrap/js/bootstrap.js"></script>

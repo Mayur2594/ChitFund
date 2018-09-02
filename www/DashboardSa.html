@@ -40,11 +40,10 @@
     <div class="overlay"></div>
     <!-- #END# Overlay For Sidebars -->
 	<section>
-		<div ng-if="userlevel !== 'Superadmin'" ng-include="'Mainmenu.html'"></div>
-		<div ng-if="userlevel === 'Superadmin'" ng-include="'SuperadminMainmenu.html'"></div>
+		<div ng-include="'SuperadminMainmenu.html'"></div>
     </section>
 
-    <section class="content" ng-init="getDashboardCountAdmin('day',Curentdate)">
+    <section class="content" ng-init="getDashboardCount('day',Curentdate)">
         <!-- <div class="container-fluid"> -->
             <!-- Widgets -->
 			
@@ -52,7 +51,7 @@
 
  
 		
-            <div class="row clearfix mt-5" style="margin-top:-2.3rem;">
+            <div class="row clearfix" style="margin-top:-2.3rem;" ng-init="">
             
 					
 		
@@ -60,50 +59,50 @@
 			<div class="col-sm-6 col-xs-6">
 						<div class="input-group">
 							<div class="form-line">
-								<input type="month" class="form-control" ng-model="selectedmonth" ng-change="getDashboardCountAdmin('month',selectedmonth)"/>
+								<input type="month" class="form-control" ng-model="selectedmonth" ng-change="getDashboardCount('month',selectedmonth)"/>
 							</div>
 						</div>
 					</div>
 					<div class="col-sm-6 col-xs-6">
 						<div class="input-group">
 							<div class="form-line">
-								<input type="date" class="form-control" ng-model="selecteddate" ng-change="getDashboardCountAdmin('day',selecteddate)"/>
+								<input type="date" class="form-control" ng-model="selecteddate" ng-change="getDashboardCount('day',selecteddate)"/>
 							</div>
 						</div>
 					</div>
 		</div>
 		
-		 <div class="info-box-3 col-md-6 col-sm-6 col-xs-6 bg-teal img-thumbnail1" style="height:140px" onclick="location.href='MembersDetails.html'">
+		 <div class="info-box-3 col-md-6 col-sm-6 col-xs-6 bg-teal img-thumbnail1" style="height:140px" onclick="location.href='CompanyDetails.html'">
 						<div class="icon">
-                            <i class="material-icons" style="font-size:10rem;">people</i>
+                            <i class="material-icons" style="font-size:10rem;">domain</i>
                         </div>
 						 <div class="content pull-left">
                             <div class="header">
                             <h4>
-                           Members
+                           Companies
                             </h4>
                             
                         </div>
-						<h2 class="h2-responsive pull-left">{{AdminDashboardCount[0].totalmembers}}</h2>
+						<h2 class="h2-responsive pull-left">{{DashboardCount[0].totalcompanies}}</h2>
                         </div>
             </div>
 			
-			<div class="info-box-3 col-md-6 col-sm-6 col-xs-6 bg-amber img-thumbnail1" style="height:140px" onclick="location.href='customerMaster.html'">
+			<div class="info-box-3 col-md-6 col-sm-6 col-xs-6 bg-amber img-thumbnail1" style="height:140px" onclick="location.href='PlanDetails.html'">
 					<div class="icon">
                             <i class="material-icons" style="font-size:10rem;">widgets</i>
                         </div>
 						 <div class="content pull-left">
                             <div class="header">
                             <h4>
-								Chits
+								Plans
                             </h4>
                             
                         </div>
-						<h2 class="h2-responsive pull-left">{{AdminDashboardCount[0].totalchits}}</h2>
+						<h2 class="h2-responsive pull-left">{{DashboardCount[0].totalplans }}</h2>
                         </div>
             </div>
            
-            <div class="info-box-3 col-md-12 col-sm-12 col-xs-12 bg-cyan img-thumbnail1" style="height:140px;margin-top:-28px;margin-bottom:6.5rem;"  onclick="location.href='SalesMaster.html'">
+            <div class="info-box-3 col-md-12 col-sm-12 col-xs-12 bg-cyan img-thumbnail1" style="height:140px;margin-top:-28px;margin-bottom:6.5rem;"  onclick="location.href='CompanyPlanAllocation.html'">
 						<div class="icon">
 						
                             <i class="material-icons" style="font-size:10rem;">payment</i>
@@ -111,11 +110,11 @@
 						 <div class="content pull-left">
                             <div class="header">
                             <h4>
-								Total Payment
+								Company`s Payments
                             </h4>
                             
                         </div>
-						<h2 class="h2-responsive pull-left">{{AdminDashboardCount[0].totalchitpayment | number:2}}</h2>
+						<h2 class="h2-responsive pull-left">{{DashboardCount[0].collectedamt |number:2}}</h2>
 						<div class="row" style="white-space:nowrap;">
 						
 						</div>
@@ -123,19 +122,19 @@
 						
             </div>
 			
-			<div class="info-box-3 col-md-12 col-sm-12 col-xs-12 bg-teal img-thumbnail1" style="height:140px;margin-top:-64.5px;margin-bottom:6.5rem;"  onclick="location.href='SalesMaster.html'">
+			<div class="info-box-3 col-md-12 col-sm-12 col-xs-12 bg-teal img-thumbnail1" style="height:140px;margin-top:-64.5px;margin-bottom:6.5rem;"  onclick="location.href='userMaster.html'">
 						<div class="icon">
 						
-                            <i class="material-icons" style="font-size:10rem;">&#xE560;</i>
+                            <i class="material-icons" style="font-size:10rem;">people</i>
                         </div>
 						 <div class="content pull-left">
                             <div class="header">
                             <h4>
-								Total Receipts
+								Users
                             </h4>
                             
                         </div>
-						<h2 class="h2-responsive pull-left">{{AdminDashboardCount[0].totalchitreceipt | number:2}}</h2>
+						<h2 class="h2-responsive pull-left">{{DashboardCount[0].totalusers}}</h2>
 						<div class="row" style="white-space:nowrap;">
 						
 						</div>
@@ -146,9 +145,9 @@
 				
 			</div>
 			
-			<!-- <div class="row btmnavbar">
+			<div class="row btmnavbar" ng-if="userlevel !== 'Superadmin'" >
 			<div ng-include="'navtabs.html'"></div>
-			</div> -->
+			</div>
 			</div>
 			
         <!-- </div> -->

@@ -4,7 +4,7 @@
         <div class="container-fluid">
             <div class="navbar-header">
                 <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false" style="visibility:hidden"></a>
-                <a href="javascript:void(0);" ng-show="userlevel== 'Admin'" class="bars"></a>
+                <a href="javascript:void(0);" class="bars"></a>
                 <a class="navbar-brand">{{pageheader}}</a>
 				 <a href="#" onclick="localStorage.clear();sessionStorage.clear();location.href='index.html';" class="signout"></a>
             </div>
@@ -67,28 +67,35 @@
                 <ul class="list">
                     <li class="header">Username: {{username}}</li>
 							<li class="active">
-								<a href="Dashboard.html">
+								<a href="DashboardSa.html">
 									<i class="material-icons">home</i>
 									<span>Home</span>
 								</a>
 							</li>
 							<li>
-								<a href="MembersDetails.html">
+								<a href="CompanyDetails.html">
 									<i class="material-icons">people</i>
-									<span>Member`s Details</span>
+									<span>Company`s Details</span>
 								</a>
 							</li>
 							
 							<li>
-								<a href="ChitDetail.html">
+								<a href="PlanDetails.html">
 									<i class="material-icons">widgets</i>
-									<span>Chit`s Details</span>
+									<span>Plan`s Details</span>
 								</a>
 							</li>
 							<li>
-								<a href="ChitvsMember.html">
+								<a href="CompanyPlanAllocation.html">
 									<i class="material-icons">widgets</i>
-									<span>Chits v/s Members</span>
+									<span>Company`s Plans Allocation</span>
+								</a>
+							</li>
+							
+							<li>
+								<a href="CompanyPayment.html">
+									<i class="material-icons">widgets</i>
+									<span>Company`s Payments</span>
 								</a>
 							</li>
 							
@@ -98,53 +105,6 @@
 									<span>Users</span>
 								</a>
 							</li>
-							
-							<li>
-								<a href="ChitPayment.html">
-									<i class="material-icons">payment</i>
-									<span>Chit Payment</span>
-								</a>
-							</li>
-							<li>
-								<a href="chitReceipt.html">
-									<i class="material-icons">&#xE560;</i>
-									<span>Chit Receipts</span>
-								</a>
-							</li>
-							<li>
-								<a href="#" class="menu-toggle">
-									<i class="material-icons">&#xE85D;</i>
-									<span>Reports</span>
-								</a>
-								<ul class="ml-menu">
-									<li>
-										<a href="EmployeeMaster.html">
-										 <i class="material-icons" style="font-size:15px;color:orange;">donut_large</i>
-											<span>Member`s Ledger</span>
-										</a>
-									</li>
-									<li>
-										<a href="userAttendance.html">
-										 <i class="material-icons" style="font-size:15px;color:orange;">donut_large</i>
-											<span>Chit's Ledger</span>
-										</a>
-									</li>
-									<li>
-										<a href="expenses_master.html">
-										 <i class="material-icons" style="font-size:15px;color:orange;">donut_large</i>
-											<span>Day Book</span>
-										</a>
-									</li>
-									<li>
-										<a href="EmployeeSalary.html">
-										 <i class="material-icons" style="font-size:15px;color:orange;">donut_large</i>
-											<span>Receipts Due</span>
-										</a>
-									</li>
-								</ul>
-							</li>
-                        </ul>
-                    </li>
                 </ul>
             </div>
             <!-- #Menu -->
